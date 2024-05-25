@@ -36,6 +36,7 @@ public class HurdleManagerEditor : Editor
 
 		if (GUILayout.Button("Place Hurdles", GUILayout.ExpandWidth(true), GUILayout.Height(30)))
 		{
+			hurdleManager.tileDataSO.RaiseTileMapChanged();
 			hurdleManager.PlaceHurdles();
 		}
 	}

@@ -11,6 +11,7 @@ public class TileSelector : MonoBehaviour
 	[SerializeField] TMP_Text indexTEXT;
 
 	private Camera mainCam;
+	private AudioSource audioSource;
 
 	[SerializeField] Vector2Int? currentlySelected;
 
@@ -18,6 +19,7 @@ public class TileSelector : MonoBehaviour
 	{
 		mainCam = Camera.main;
 		currentlySelected = null;
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	private void Update()
@@ -31,6 +33,8 @@ public class TileSelector : MonoBehaviour
 		Physics.Raycast(ray, out hitInfo, 1000, tileLayer);
 
 		Vector2Int? index = tileMapGen.HighlightTile(hitInfo.collider == null ? null : hitInfo.collider.gameObject.GetInstanceID());
+
+		if (index != currentlySelected) audioSource.Play();
 
 		indexTEXT.text = index.HasValue == true ? $"({index.Value.x}, {index.Value.y})" : "Not Selected";
 
