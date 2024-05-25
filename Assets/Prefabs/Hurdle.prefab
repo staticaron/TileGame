@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3487435089173837914}
   - component: {fileID: 2130182796878655793}
   - component: {fileID: 3188307630062644112}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Hurdle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

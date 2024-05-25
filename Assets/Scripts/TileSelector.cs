@@ -12,9 +12,12 @@ public class TileSelector : MonoBehaviour
 
 	private Camera mainCam;
 
+	[SerializeField] Vector2Int? currentlySelected;
+
 	private void Awake()
 	{
 		mainCam = Camera.main;
+		currentlySelected = null;
 	}
 
 	private void Update()
@@ -27,8 +30,15 @@ public class TileSelector : MonoBehaviour
 
 		Physics.Raycast(ray, out hitInfo, 1000, tileLayer);
 
-		Vector2? index = tileMapGen.HighlightTile(hitInfo.collider == null ? null : hitInfo.collider.gameObject.GetInstanceID());
+		Vector2Int? index = tileMapGen.HighlightTile(hitInfo.collider == null ? null : hitInfo.collider.gameObject.GetInstanceID());
 
 		indexTEXT.text = index.HasValue == true ? $"({index.Value.x}, {index.Value.y})" : "Not Selected";
+
+		currentlySelected = index;
+	}
+
+	public Vector2Int? GetCurrentlySelected()
+	{
+		return currentlySelected;
 	}
 }

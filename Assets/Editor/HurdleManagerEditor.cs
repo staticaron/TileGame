@@ -4,29 +4,37 @@ using UnityEngine;
 [CustomEditor(typeof(HurdleManager))]
 public class HurdleManagerEditor : Editor
 {
+	private bool expandButtons = false;
+
 	public override void OnInspectorGUI()
 	{
 		base.OnInspectorGUI();
-
 		HurdleManager hurdleManager = (HurdleManager)target;
 
-		if (hurdleManager.tileDataSO.hurdlePlacementIndex.Length != 100) hurdleManager.tileDataSO.hurdlePlacementIndex = new bool[100];
+		expandButtons = EditorGUILayout.BeginFoldoutHeaderGroup(expandButtons, "Expand Buttons");
 
-		for (int x = 0; x < hurdleManager.width; x++)
+		if (expandButtons)
 		{
-			EditorGUILayout.BeginHorizontal();
+			if (hurdleManager.tileDataSO.hurdlePlacementIndex.Length != 100) hurdleManager.tileDataSO.hurdlePlacementIndex = new bool[100];
 
-			for (int y = 0; y < hurdleManager.height; y++)
+			GUILayout.Space(5);
+
+			for (int x = 0; x < hurdleManager.width; x++)
 			{
-				hurdleManager.tileDataSO.hurdlePlacementIndex[x * hurdleManager.width + y] = GUILayout.Toggle(hurdleManager.tileDataSO.hurdlePlacementIndex[x * 10 + y], $"{x}, {y}", "Button", GUILayout.Width(40), GUILayout.Height(40));
-			}
+				EditorGUILayout.BeginHorizontal();
 
-			EditorGUILayout.EndHorizontal();
+				for (int y = 0; y < hurdleManager.height; y++)
+				{
+					hurdleManager.tileDataSO.hurdlePlacementIndex[x * hurdleManager.width + y] = GUILayout.Toggle(hurdleManager.tileDataSO.hurdlePlacementIndex[x * 10 + y], $"{x}.{y}", "Button", GUILayout.Width(30), GUILayout.Height(30));
+				}
+
+				EditorGUILayout.EndHorizontal();
+			}
 		}
 
-		GUILayout.Space(10);
+		GUILayout.Space(5);
 
-		if (GUILayout.Button("Place Hurdles", GUILayout.ExpandWidth(true), GUILayout.Height(40)))
+		if (GUILayout.Button("Place Hurdles", GUILayout.ExpandWidth(true), GUILayout.Height(30)))
 		{
 			hurdleManager.PlaceHurdles();
 		}

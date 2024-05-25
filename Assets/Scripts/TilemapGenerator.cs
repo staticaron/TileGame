@@ -35,12 +35,21 @@ public class TilemapGenerator : MonoBehaviour
 	{
 		tiles = new List<GameObject>();
 
-		foreach (Transform t in tileContainer)
-		{
-			Destroy(t.gameObject);
-		}
+		#region Clear Existing Tiles
+
+		if (Application.isEditor) DestroyImmediate(tileContainer.gameObject);
+		else Destroy(tileContainer.gameObject);
+
+		GameObject gO = new GameObject("Tile Container");
+		gO.transform.position = Vector3.zero;
+		gO.transform.rotation = Quaternion.identity;
+		gO.transform.parent = transform;
+
+		tileContainer = gO.transform;
 
 		tiles.Clear();
+
+		#endregion
 
 		for (int x = 0; x < width; x++)
 		{
@@ -57,7 +66,12 @@ public class TilemapGenerator : MonoBehaviour
 		}
 	}
 
-	public Vector2? HighlightTile(int? tileObjectID)
+	public Vector3 GetPositionFromIndex(Vector2Int index)
+	{
+		return transform.position + new Vector3(index.x * spacing.x, 0, index.y * spacing.y);
+	}
+
+	public Vector2Int? HighlightTile(int? tileObjectID)
 	{
 		if (!tileObjectID.HasValue && wasChanged == false) return null;
 
@@ -73,14 +87,14 @@ public class TilemapGenerator : MonoBehaviour
 			return null;
 		}
 
-		Vector2 index = Vector2.zero;
+		Vector2Int index = Vector2Int.zero;
 
 		for (int x = 0; x < tiles.Count; x++)
 		{
 			if (tiles[x].GetInstanceID() == tileObjectID.Value)
 			{
 				tiles[x].GetComponent<Renderer>().sharedMaterial = highlightMaterial;
-				index = new Vector2(x / 10, x % 10);
+				index = new Vector2Int(x / 10, x % 10);
 			}
 			else
 			{
@@ -95,9 +109,10 @@ public class TilemapGenerator : MonoBehaviour
 
 	public void PlaceHurdles(bool[] placementIndices)
 	{
-		DestroyImmediate(hurdleContainer.gameObject);
+		#region Clear Existing Hurdles
 
-		Debug.Break();
+		if (Application.isEditor) DestroyImmediate(hurdleContainer.gameObject);
+		else Destroy(hurdleContainer.gameObject);
 
 		GameObject gO = new GameObject("Hurdle Container");
 		gO.transform.position = Vector3.zero;
@@ -107,6 +122,8 @@ public class TilemapGenerator : MonoBehaviour
 		hurdleContainer = gO.transform;
 
 		hurdles.Clear();
+
+		#endregion
 
 		for (int x = 0; x < placementIndices.Length; x++)
 		{
