@@ -30,6 +30,7 @@ public class TilemapGenerator : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Return)) Generate();
 	}
 
+	// Generate the tilemap by placing w*h objects in x-z fashion.
 	[ContextMenu("Generate Tilemap")]
 	public void Generate()
 	{
@@ -71,10 +72,13 @@ public class TilemapGenerator : MonoBehaviour
 		return transform.position + new Vector3(index.x * spacing.x, 0, index.y * spacing.y);
 	}
 
+	// Tile under the move cusor is highlighted. 
 	public Vector2Int? HighlightTile(int? tileObjectID)
 	{
+		// if the current objID is null, and the tile were not modified in the previous frame, do nothing.
 		if (!tileObjectID.HasValue && wasChanged == false) return null;
 
+		// if the tiles were modified in the previous frame and the current objID is null, we have to set all the tiles to normal.
 		if (!tileObjectID.HasValue && wasChanged == true)
 		{
 			foreach (GameObject g in tiles)
@@ -87,6 +91,7 @@ public class TilemapGenerator : MonoBehaviour
 			return null;
 		}
 
+		// Highlight the underlying tile.
 		Vector2Int index = Vector2Int.zero;
 
 		for (int x = 0; x < tiles.Count; x++)
@@ -107,6 +112,7 @@ public class TilemapGenerator : MonoBehaviour
 		return index;
 	}
 
+	// Read the SO to accurately place the hurdles on the map. 
 	public void PlaceHurdles(bool[] placementIndices)
 	{
 		#region Clear Existing Hurdles

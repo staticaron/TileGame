@@ -24,10 +24,12 @@ public class EnemyMovement : PathFinder
 		FindPath(currentIndex, playerMovement.GetCurrentIndex());
 	}
 
+	// Implements custom movement code.
 	public override IEnumerator MoveOnPath(List<Node> pathToFollow)
 	{
 		int indexProcessed = 0;
 
+		// Skip the last node to move on, which will allow enemy to move close to but not on the player itself.
 		while (indexProcessed < pathToFollow.Count - 1)
 		{
 			yield return new WaitForSeconds(moveSpeed);
@@ -40,6 +42,7 @@ public class EnemyMovement : PathFinder
 
 			PlayWalkingSound();
 
+			// update current position of the enemy.
 			currentIndex = tileIndex;
 		}
 	}

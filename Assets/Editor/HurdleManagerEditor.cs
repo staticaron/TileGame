@@ -11,8 +11,10 @@ public class HurdleManagerEditor : Editor
 		base.OnInspectorGUI();
 		HurdleManager hurdleManager = (HurdleManager)target;
 
+		// Drop down
 		expandButtons = EditorGUILayout.BeginFoldoutHeaderGroup(expandButtons, "Expand Buttons");
 
+		// Populating the buttons which change the SO directly.
 		if (expandButtons)
 		{
 			if (hurdleManager.tileDataSO.hurdlePlacementIndex.Length != 100) hurdleManager.tileDataSO.hurdlePlacementIndex = new bool[100];
@@ -34,6 +36,7 @@ public class HurdleManagerEditor : Editor
 
 		GUILayout.Space(5);
 
+		// Button to spawn the hurdles according the values in the SO.
 		if (GUILayout.Button("Place Hurdles", GUILayout.ExpandWidth(true), GUILayout.Height(30)))
 		{
 			hurdleManager.tileDataSO.RaiseTileMapChanged();

@@ -9,6 +9,7 @@ public class HurdleManager : MonoBehaviour
 
 	[SerializeField] TilemapGenerator tileMapGen;
 
+	// Called from the editor script to place the hurdles.
 	public void PlaceHurdles()
 	{
 		tileMapGen.PlaceHurdles(tileDataSO.hurdlePlacementIndex);

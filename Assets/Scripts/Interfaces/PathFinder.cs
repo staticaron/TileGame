@@ -72,12 +72,16 @@ public abstract class PathFinder : MonoBehaviour, IPathfinder
 		return neighbours;
 	}
 
+	// Performs the entire path finding algorithm on the nodes and start the movement coroutine. 
 	public void FindPath(Vector2Int startIndex, Vector2Int endIndex)
 	{
+		// Initialize the nodes, read the data from the SO and load it into the memory.
 		if (!initialized) Init();
 
+		// Stop all existing movement coroutines to restart them after the path is recalculated.
 		StopAllCoroutines();
 
+		// A* Algorithm Implementation.
 		List<Node> openSet = new List<Node>();
 		HashSet<Node> closedSet = new HashSet<Node>();
 
@@ -130,9 +134,11 @@ public abstract class PathFinder : MonoBehaviour, IPathfinder
 			}
 		}
 
+		// If the Retrace Path function was not called then this function will execute playing a 'Failed to Create Path Sound'.
 		PlayPathfinderFailed();
 	}
 
+	// Creates a path in the forward direction from the nodes that are in the path.
 	private void RetracePath(Node startNode, Node endNode)
 	{
 		List<Node> path = new List<Node>();
@@ -150,8 +156,10 @@ public abstract class PathFinder : MonoBehaviour, IPathfinder
 		StartCoroutine(MoveOnPath(path));
 	}
 
+	// This coroutine is implemented on the class which is going to inherit this class so that we can implement custom movement code from the singular pathfinding algorithm.
 	public abstract IEnumerator MoveOnPath(List<Node> path);
 
+	// Distance between two nodes.
 	private int GetDistance(Node n1, Node n2)
 	{
 		int dotX = Mathf.Abs(n1.index.x - n2.index.x);

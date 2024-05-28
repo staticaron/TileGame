@@ -28,14 +28,15 @@ public class TileSelector : MonoBehaviour
 
 		Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
 
-		Debug.DrawRay(ray.origin, ray.direction, Color.cyan, 10);
-
+		// perform a raycast from the camera and detect if hits any tile objects.
 		Physics.Raycast(ray, out hitInfo, 1000, tileLayer);
 
 		Vector2Int? index = tileMapGen.HighlightTile(hitInfo.collider == null ? null : hitInfo.collider.gameObject.GetInstanceID());
 
+		// if nothing is selected, don't play the hover sound otherwise play hoversound on tile change.
 		if (index != currentlySelected) audioSource.Play();
 
+		// update the UI to reflect the currently selected tile. 
 		indexTEXT.text = index.HasValue == true ? $"({index.Value.x}, {index.Value.y})" : "Not Selected";
 
 		currentlySelected = index;
